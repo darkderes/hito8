@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "axios";
+import { UserContext } from "../context/UserContext";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { auth } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -26,19 +29,8 @@ const LoginPage = () => {
       return;
     }
     // Aquí puedes realizar la autenticación con el backend
-    auth();
-  };
-
-  const auth = async () => {
-    try {
-      const URL = "http://localhost:5000/api/auth/login";
-      const response = await axios.post(URL, formData);
-      const { token } = response.data;
-      localStorage.setItem("token", token);
-      console.log("Token:", token);
-    } catch (error) {
-      console.error("Error during authentication:", error);
-    }
+    auth(formData, navigate);
+    console.log("Datos enviados:", formData);
   };
 
   return (

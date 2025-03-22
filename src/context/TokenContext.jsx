@@ -3,10 +3,12 @@ import { createContext, useState } from "react";
 export const TokenContext = createContext();
 
 export const TokenProvider = ({ children }) => {
-  const [token, setToken] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const logout = () => {
-    setToken(false);
+    //setToken(false);
+    localStorage.removeItem("token");
+    setToken(null);
   };
   return (
     <TokenContext.Provider
