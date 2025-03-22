@@ -5,7 +5,6 @@ import { UserContext } from "../context/UserContext";
 const ProfilePage = () => {
   const { emailUser, logout, userData } = useContext(UserContext);
 
-  // Fetch user data when the component mounts
   useEffect(() => {
     userData();
   }, [userData]);
