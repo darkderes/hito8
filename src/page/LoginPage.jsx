@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -24,20 +25,34 @@ const LoginPage = () => {
       alert("La contraseña debe tener al menos 6 caracteres");
       return;
     }
-    if (
-      formData.email === "prueba@prueba.com" &&
-      formData.password === "1234567"
-    ) {
-      alert("Login exitoso");
-    } else {
-      alert("Email o contraseña incorrectos");
-    }
+    // Aquí puedes realizar la autenticación con el backend
+    auth();
+    // if (
+    //   formData.email === "prueba@prueba.com" &&
+    //   formData.password === "1234567"
+    // ) {
+    //   alert("Login exitoso");
+    // } else {
+    //   alert("Email o contraseña incorrectos");
+    // }
 
-    alert(JSON.stringify(formData, null, 2));
-    setFormData({
-      email: "",
-      password: "",
-    });
+    // alert(JSON.stringify(formData, null, 2));
+    // setFormData({
+    //   email: "",
+    //   password: "",
+    // });
+  };
+
+  const auth = async () => {
+    try {
+      const URL = "http://localhost:5000/api/auth/login";
+      const response = await axios.post(URL, formData);
+      const { token } = response.data;
+      localStorage.setItem("token", token);
+      console.log("Token:", token);
+    } catch (error) {
+      console.error("Error during authentication:", error);
+    }
   };
 
   return (
