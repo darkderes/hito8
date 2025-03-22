@@ -4,7 +4,8 @@ import { TokenContext } from "../context/TokenContext";
 
 const CartPage = () => {
   // ocupar el context para obtener el carrito
-  const { carts, addToCart, decreaseQuantity, total } = useContext(CartContext);
+  const { carts, addToCart, decreaseQuantity, total, checkOut } =
+    useContext(CartContext);
   const { token } = useContext(TokenContext);
 
   const handleAddToCart = (id, name, img, price) => {
@@ -13,6 +14,10 @@ const CartPage = () => {
 
   const handledecreaseQuantity = (id) => {
     decreaseQuantity(id);
+  };
+
+  const handleCheckout = () => {
+    checkOut();
   };
 
   return (
@@ -53,7 +58,11 @@ const CartPage = () => {
       <div className="d-flex justify-content-between w-10 my-3">
         <h3 className="fs-2 me-4">Total: ${total.toLocaleString()}</h3>
 
-        <button className="btn btn-dark btn-lg" disabled={!token}>
+        <button
+          className="btn btn-dark btn-lg"
+          disabled={!token}
+          onClick={() => handleCheckout()}
+        >
           Pagar
         </button>
       </div>
