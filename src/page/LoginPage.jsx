@@ -27,20 +27,6 @@ const LoginPage = () => {
     }
     // Aquí puedes realizar la autenticación con el backend
     auth();
-    // if (
-    //   formData.email === "prueba@prueba.com" &&
-    //   formData.password === "1234567"
-    // ) {
-    //   alert("Login exitoso");
-    // } else {
-    //   alert("Email o contraseña incorrectos");
-    // }
-
-    // alert(JSON.stringify(formData, null, 2));
-    // setFormData({
-    //   email: "",
-    //   password: "",
-    // });
   };
 
   const auth = async () => {
