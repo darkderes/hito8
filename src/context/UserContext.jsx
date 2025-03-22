@@ -1,70 +1,56 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { TokenContext } from "./TokenContext";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState([]);
+  const { setToken } = useContext(TokenContext);
+  const [emailUser, setEmail] = useState(null);
 
-  const auth = async (formData, navigate) => {
+  const auth = async (formData) => {
     try {
       const URL = "http://localhost:5000/api/auth/login";
       const response = await axios.post(URL, formData);
-      const { token } = response.data;
+      const { token, email } = response.data;
       localStorage.setItem("token", token);
-      //   console.log("Token:", token);
+      setToken(token);
+      setEmail(email);
       toast.success("Inicio de sesión exitoso");
-      navigate("/");
     } catch (error) {
       toast.error("Error durante la autenticación");
       console.error("Error during authentication:", error);
     }
   };
 
-  //   const addToCart = (pizza) => {
-  //     setCarts((prevCarts) => {
-  //       const existingCartItem = prevCarts.find(
-  //         (cartItem) => cartItem.id === pizza.id
-  //       );
-
-  //       if (existingCartItem) {
-  //         return prevCarts.map((cartItem) =>
-  //           cartItem.id === pizza.id
-  //             ? { ...cartItem, qty: cartItem.qty + 1 }
-  //             : cartItem
-  //         );
-  //       } else {
-  //         const newCart = {
-  //           id: pizza.id,
-  //           img: pizza.img,
-  //           name: pizza.name,
-  //           price: pizza.price,
-  //           qty: 1,
-  //         };
-  //         return [...prevCarts, newCart];
-  //       }
-  //     });
-  //     toast.success("Pizza añadida al carrito!");
-  //   };
-
-  //   const decreaseQuantity = (id) => {
-  //     setCarts(
-  //       carts
-  //         .map((pizza) =>
-  //           pizza.id === id ? { ...pizza, qty: pizza.qty - 1 } : pizza
-  //         )
-  //         .filter((pizza) => pizza.id !== id || pizza.qty > 0)
-  //     );
-  //     toast.error("Pizza eliminada del carrito!");
-  //   };
-
-  //   const total = carts.reduce((acc, pizza) => acc + pizza.price * pizza.qty, 0);
+  const register = async (formData) => {
+    try {
+      const URL = "http://localhost:5000/api/auth/register";
+      const response = await axios.post(URL, formData);
+      const { token, email } = response.data;
+      localStorage.setItem("token", token);
+      setToken(token);
+      setEmail(email);
+      toast.success("Registro exitoso");
+    } catch (error) {
+      toast.error("Error durante el registro");
+      console.error("Error during registration:", error);
+    }
+  };
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setEmail(null);
+  };
 
   return (
     <UserContext.Provider
       value={{
         auth,
+        emailUser,
+        register,
+        logout,
       }}
     >
       {children}

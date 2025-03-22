@@ -13,10 +13,12 @@ import {
 } from "react-icons/fa";
 import { CartContext } from "../context/CartContext";
 import { TokenContext } from "../context/TokenContext";
+import { UserContext } from "../context/UserContext"; // Importar la función logout
 
 const NavbarApp = () => {
   const { total } = useContext(CartContext);
-  const { token, logout } = useContext(TokenContext);
+  const { token } = useContext(TokenContext);
+  const { logout } = useContext(UserContext); // Obtener la función logout
 
   return (
     <Navbar

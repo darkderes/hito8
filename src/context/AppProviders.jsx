@@ -5,13 +5,13 @@ import { UserProvider } from "./UserContext";
 
 const AppProviders = ({ children }) => {
   return (
-    <UserProvider>
-      <TokenProvider>
+    <TokenProvider>
+      <UserProvider>
         <CartProvider>
           <PizzaProvider>{children}</PizzaProvider>
         </CartProvider>
-      </TokenProvider>
-    </UserProvider>
+      </UserProvider>
+    </TokenProvider>
   );
 };
 

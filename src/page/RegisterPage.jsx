@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -6,6 +8,7 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
+  const { register } = useContext(UserContext);
 
   const handleChange = (e) => {
     setFormData({
@@ -17,25 +20,20 @@ const RegisterPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.values(formData).some((value) => value === "")) {
-      alert("Faltan datos");
+      toast.error("Faltan datos");
       return;
     }
     if (formData.password.length < 6) {
-      alert("La contraseña debe tener al menos 6 caracteres");
+      toast.error("La contraseña debe tener al menos 6 caracteres");
       return;
     }
     if (formData.password !== formData.confirmPassword) {
-      alert(
+      toast.error(
         "La contraseña y la confirmación de la contraseña deben ser iguales"
       );
       return;
     }
-    alert(JSON.stringify(formData, null, 2));
-    setFormData({
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+    register(formData);
   };
 
   return (

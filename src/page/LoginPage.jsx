@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { UserContext } from "../context/UserContext";
 
@@ -9,7 +8,6 @@ const LoginPage = () => {
     password: "",
   });
   const { auth } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -29,7 +27,7 @@ const LoginPage = () => {
       return;
     }
     // Aquí puedes realizar la autenticación con el backend
-    auth(formData, navigate);
+    auth(formData);
     console.log("Datos enviados:", formData);
   };
 
