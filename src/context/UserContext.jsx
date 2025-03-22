@@ -38,6 +38,23 @@ export const UserProvider = ({ children }) => {
       console.error("Error during registration:", error);
     }
   };
+
+  const userData = async () => {
+    try {
+      const URL = "http://localhost:5000/api/auth/me";
+      const response = await axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const { email } = response.data;
+      setEmail(email);
+    } catch (error) {
+      toast.error("Error al obtener los datos del usuario");
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -51,6 +68,7 @@ export const UserProvider = ({ children }) => {
         emailUser,
         register,
         logout,
+        userData,
       }}
     >
       {children}

@@ -1,9 +1,14 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import { UserContext } from "../context/UserContext";
 
 const ProfilePage = () => {
-  const { emailUser, logout } = useContext(UserContext);
+  const { emailUser, logout, userData } = useContext(UserContext);
+
+  // Fetch user data when the component mounts
+  useEffect(() => {
+    userData();
+  }, [userData]);
 
   return (
     <Container className="d-flex justify-content-center align-items-center vh-100">
