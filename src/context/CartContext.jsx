@@ -45,42 +45,43 @@ export const CartProvider = ({ children }) => {
 
   const total = carts.reduce((acc, pizza) => acc + pizza.price * pizza.qty, 0);
 
-  const checkOut = () => {
+  const checkOut = async () => {
     if (carts.length === 0) {
       toast.error("El carrito está vacío");
       return;
     }
     try {
-      const URL = "http://localhost:5000/api/checkout";
+      const URL = "http://localhost:5000/api/checkouts";
       const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("No se encontró el token de autenticación");
+        return;
+      }
       const headers = {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       };
 
-      fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers,
         body: JSON.stringify({
           cart: carts,
         }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            toast.success("Pedido realizado con éxito!");
-            setCarts([]);
-          } else {
-            toast.error("Error al realizar el pedido");
-          }
-        });
-    } catch (error) {
-      console.error("Error al realizar el pedido:", error);
-      toast.error("Error al realizar el pedido");
-    }
+      });
 
-    toast.success("Pedido realizado con éxito!");
-    setCarts([]);
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Pedido realizado con éxito!");
+        setCarts([]);
+      } else {
+        toast.error(data.message || "Error al realizar el pedido");
+      }
+    } catch (error) {
+      toast.error("Error al realizar el pedido");
+      console.error("Error al realizar el pedido:", error);
+    }
   };
 
   return (
